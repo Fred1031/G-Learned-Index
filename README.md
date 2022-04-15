@@ -17,6 +17,6 @@ nvcc g-learned.cu -std=c++17 -O3 -I../include -Xcompiler -fopenmp -o g-learned
 ./g-learned
 ```
 
-For the datasets, you can fetch them at https://anonymous.4open.science/r/DatasetofASSMJoin-8089/
+For the datasets, you can look into the data folder.
 
 With the code and datasets, you can reproduce all the experiment results in our article. 
