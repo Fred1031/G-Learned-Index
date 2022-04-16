@@ -1,1 +1,2 @@
-The three real-word datasets, Rovio, DEBS and EECR are available here.
+The three smaller synthesized datasets are available here.
+For the larger datasets, you can fetch them at 
