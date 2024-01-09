@@ -166,11 +166,13 @@ int main() {
 		cudaMalloc((void **)&g_lo, m);
 		cudaMalloc((void **)&g_hi, m);
 		cudaMalloc((void **)&g_segments, m_segments);
-		cudaMemcpy(g_query, query + batch * batch_size, m, cudaMemcpyHostToDevice);
-		cudaMemcpy(g_segments, &segments, m_segments, cudaMemcpyHostToDevice);
 
 		GpuTimer querytimer;
 		querytimer.timerStart();
+
+		cudaMemcpy(g_query, query + batch * batch_size, m, cudaMemcpyHostToDevice);
+		cudaMemcpy(g_segments, &segments, m_segments, cudaMemcpyHostToDevice);
+
 		gpu_query<<<grid_size, block_size>>>
 		(
 		 index.first_key,
@@ -184,12 +186,14 @@ int main() {
 		 );
 		querytimer.timerStop();
 
+
+		GpuTimer lower_bound_timer;
+		lower_bound_timer.timerStart();
+
 		cudaMemcpy(pos, g_pos, m, cudaMemcpyDeviceToHost);
 		cudaMemcpy(lo, g_lo, m, cudaMemcpyDeviceToHost);
 		cudaMemcpy(hi, g_hi, m, cudaMemcpyDeviceToHost);
 
-		GpuTimer lower_bound_timer;
-		lower_bound_timer.timerStart();
 		for (int i = 0; i < batch_size; i ++) {
 			for (int j = lo[i]; j < hi[i]; j ++)
 				if (query[i] == data[j])
